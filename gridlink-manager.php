@@ -2,11 +2,13 @@
 ### Check Whether User Can Manage Polls
 if(!current_user_can('manage_polls')) {
   die('Access Denied');
+} else {
+  init_db_connection();
 }
 
-if ( ! function_exists( 'wp_handle_upload' ) ) {
-  require_once( ABSPATH . 'wp-admin/includes/file.php' );
-}
+// if ( ! function_exists( 'wp_handle_upload' ) ) {
+//   require_once( ABSPATH . 'wp-admin/includes/file.php' );
+// }
 
 $page_select_args = $args = array(
   'depth'                 => 2,
@@ -21,8 +23,18 @@ $page_select_args = $args = array(
   'option_none_value'     => null, // string
 );
 
-if(isset($_POST['grid_title']) && isset($_POST['grid_link']) && isset($_POST['grid_logo'])) {
+function init_db_connection() {
+  global $wpdb;
   $wpdb->grid_link = $wpdb->prefix.'grid_link';
+  $wpdb->grid_cat = $wpdb->prefix.'grid_cat';
+}
+
+function get_grid_cats() {
+  global $wpdb;
+  return $wpdb->get_results('SELECT * FROM '.$wpdb->prefix.'grid_cat');
+}
+
+if(isset($_POST['grid_title']) && isset($_POST['grid_link']) && isset($_POST['grid_logo'])) {
   $title = strip_tags($_POST['grid_title'], '');
   $link = strip_tags($_POST['grid_link'], '');
   // $uploaded_file = $_FILE['grid_logo'];
@@ -47,7 +59,6 @@ if(isset($_POST['grid_title']) && isset($_POST['grid_link']) && isset($_POST['gr
 }
 
 if(isset($_POST['cat_title'])) {
-  $wpdb->grid_cat = $wpdb->prefix.'grid_cat';
   $title = strip_tags($_POST['cat_title'], '');
 
   $wpdb->insert(
@@ -80,3 +91,10 @@ if(isset($_POST['cat_title'])) {
   <input id='category-title' type='text' name='cat_title' placeholder='Titel der Kategorie'/>
   <?php submit_button('Speichern') ?>
 </form>
+<hr />
+<h2>&Uuml;bersicht</h2>
+<?php
+foreach (get_grid_cats() as $grid_category) {
+  echo "<div>{$grid_category->title}</div>";
+}
+?>

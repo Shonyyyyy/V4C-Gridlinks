@@ -1,6 +1,6 @@
 <?php
-### Check Whether User Can Manage Polls
-if(!current_user_can('manage_polls')) {
+### Check Whether User Can Manage Options
+if(!current_user_can('manage_options')) {
   die('Access Denied');
 } else {
   init_db_connection();

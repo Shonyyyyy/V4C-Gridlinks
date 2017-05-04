@@ -16,9 +16,9 @@ define( 'VISIONS_GRIDLINKS_VERSION', '1.0.0' );
 ### Create Admin menu entry
 add_action( 'admin_menu', 'gridlink_menu' );
 
-### Create manage poll admin page
+### Create admin page
 function gridlink_menu() {
-    add_menu_page( __( 'Gridlinks', 'v4c-gridlinks' ), __( 'Gridlinks', 'v4c-gridlinks' ), 'manage_polls', 'v4c-gridlinks/gridlink-manager.php' );
+    add_menu_page( __( 'Gridlinks', 'v4c-gridlinks' ), __( 'Gridlinks', 'v4c-gridlinks' ), 'manage_options', 'v4c-gridlinks/gridlink-manager.php' );
 }
 
 function install_table() {
